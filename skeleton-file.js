@@ -10,7 +10,7 @@ function createSkeletonTable(
   CreateTableCommand,
   DescribeTableCommand,
 } = require("@aws-sdk/client-dynamodb");
-const { client } = require("./db");
+const { client } = require("../db");
 
 async function checkTableExists(tableName) {
   try {
@@ -72,7 +72,7 @@ async function createTable() {
     console.error("❌ Error while creating table:", err);
   }
 }
-
+createTable()
 `;
 }
 
