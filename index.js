@@ -1,7 +1,7 @@
 const {program}=require('commander');
 require('dotenv').config();
 const AWS = require("aws-sdk");
-const {createTable}=require('./migrations/create-table')
+const {createTable}=require('./helper/migration-meta')
 const {runMigrationFile,createMigrationFiles}=require('./lib/cli-command')
 // program.command('hello').action(() => {
 //     console.log('Hello from Dynamo CLI!');

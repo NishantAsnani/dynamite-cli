@@ -1,5 +1,6 @@
 const CONSTANTS={
-    MIGRATIONS:"migratiobs"
+    MIGRATIONS:"migrations",
+    DYNAMOMETA:"dynamometa"
 }
 
 
