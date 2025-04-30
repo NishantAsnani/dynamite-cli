@@ -1,10 +1,15 @@
 const CONSTANTS={
     MIGRATIONS:"migrations",
-    DYNAMOMETA:"dynamometa"
+    DYNAMOMETA:"dynamometa",
+}
+
+const STATUS={
+    ACTIVE:"ACTIVE"
 }
 
 
 
 module.exports={
-    CONSTANTS
+    CONSTANTS,
+    STATUS
 }
