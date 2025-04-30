@@ -143,9 +143,8 @@ async function createTable(tableName,
   partitionKeyType,
   sortKeyName,
   sortKeyType) {
-  const tableName = tableName;
-  const sortKeyName = sortKeyName ? sortKeyName : undefined;
-  const sortKeyType = sortKeyType ? sortKeyType :undefined;
+   sortKeyName = sortKeyName ? sortKeyName : undefined;
+   sortKeyType = sortKeyType ? sortKeyType :undefined;
 
   const tableExists = await checkTableExecutionStatus(tableName);
 
