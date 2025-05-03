@@ -1,6 +1,7 @@
 const {
   CreateTableCommand,
   DescribeTableCommand,
+  QueryCommand,
 } = require("@aws-sdk/client-dynamodb");
 
 const { client, docClient } = require("../db");
@@ -11,12 +12,22 @@ const {
   ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 
-async function checkTableExists(tableName) {
+async function checkMigrationExists(fileNameValue) {
   try {
-    const describeParams = { TableName: tableName };
+    const findParams={
+      TableName:CONSTANTS.DYNAMOMETA,
+      KeyConditionExpression: "tableName = :fileNameValue",
+      ExpressionAttributeValues: {
+        ":fileNameValue":{ S: fileNameValue }, 
+      },
+    }
+
+    
     const response = await client.send(
-      new DescribeTableCommand(describeParams)
+      new QueryCommand(findParams)
     );
+
+
     return response; 
   } catch (err) {
     throw err; 
@@ -62,7 +73,7 @@ async function createMetaDataTable() {
         await new Promise((resolve) => setTimeout(resolve, 2000)); // wait 2 seconds
       }
     }
-    console.log("✅ Table created successfully!");
+
   } catch (err) {
     if (err.name == "ResourceInUseException") {
       return false;
@@ -92,24 +103,24 @@ async function deleteTableName(tableName) {
   try {
     const deleteParams = {
       TableName: CONSTANTS.DYNAMOMETA,
-      Item: {
+      Key: {
         tableName: tableName,
       },
     };
 
+
     const command = new DeleteCommand(deleteParams);
     await docClient.send(command);
-    console.log("Item inserted successfully!");
   } catch (err) {
     console.log("Error adding name", err);
   }
 }
 
-async function checkTableExecutionStatus(tableName) {
+async function checkTableExecutionStatus(fileName) {
   try {
-    const tableExist = await checkTableExists(tableName);
+    const tableExist = await checkMigrationExists(fileName);
 
-    if (tableExist.Table.TableStatus == STATUS.ACTIVE) {
+    if (tableExist.Count >=1) {
       return true;
     }
   } catch (err) {
@@ -130,7 +141,7 @@ async function fetchAllMigrationNames() {
     const command = new ScanCommand(params);
     const result = await docClient.send(command);
     let allActiveMigrations =
-      result.Items.map((ele) => ele.tableName + ".js") || [];
+      result.Items.map((ele) => ele.tableName) || [];
 
     return allActiveMigrations;
   } catch (err) {
