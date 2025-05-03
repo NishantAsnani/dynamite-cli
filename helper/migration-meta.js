@@ -17,9 +17,9 @@ async function checkTableExists(tableName) {
     const response = await client.send(
       new DescribeTableCommand(describeParams)
     );
-    return response; // Table exists
+    return response; 
   } catch (err) {
-    throw err; // Other errors, like permissions or network issues
+    throw err; 
   }
 }
 
@@ -138,54 +138,8 @@ async function fetchAllMigrationNames() {
   }
 }
 
-async function createTable(tableName,
-  partitionKeyName,
-  partitionKeyType,
-  sortKeyName,
-  sortKeyType) {
-   sortKeyName = sortKeyName ? sortKeyName : undefined;
-   sortKeyType = sortKeyType ? sortKeyType :undefined;
 
-  const tableExists = await checkTableExecutionStatus(tableName);
 
-  if (tableExists) {
-    console.log(`⚠️ Table ${tableName} already exists.`);
-    return;
-  }
-
-  try {
-    const createParams = {
-      TableName: tableName,
-      AttributeDefinitions: [
-        { AttributeName: partitionKeyName, AttributeType: partitionKeyType },
-      ],
-      KeySchema: [
-        {
-          AttributeName: partitionKeyName,
-          KeyType: "HASH",
-        },
-      ],
-      ProvisionedThroughput: {
-        ReadCapacityUnits: 5,
-        WriteCapacityUnits: 5,
-      },
-    };
-
-    if (sortKeyName && sortKeyType) {
-      createParams.AttributeDefinitions.push({ AttributeName: sortKeyName, AttributeType: sortKeyType });
-      createParams.KeySchema.push({
-        AttributeName: sortKeyName,
-        KeyType: 'RANGE',
-      });
-    }
-
-    const command = new CreateTableCommand(createParams);
-    const response = await client.send(command);
-    console.log("✅ Table created successfully!");
-  } catch (err) {
-    console.error("❌ Error while creating table:", err);
-  }
-}
 
 
 
@@ -195,5 +149,4 @@ module.exports = {
   deleteTableName,
   checkTableExecutionStatus,
   fetchAllMigrationNames,
-  createTable
 };
