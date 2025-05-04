@@ -5,7 +5,7 @@ const {
 } = require("@aws-sdk/client-dynamodb");
 
 const { client, docClient } = require("../db");
-const { CONSTANTS,STATUS } = require("../constants");
+const { CONSTANTS } = require("../constants");
 const {
   PutCommand,
   DeleteCommand,

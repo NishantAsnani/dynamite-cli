@@ -1,6 +1,7 @@
 const CONSTANTS={
     MIGRATIONS:"migrations",
     DYNAMOMETA:"dynamometa",
+    SEEDERS:'seeders'
 }
 
 const STATUS={
