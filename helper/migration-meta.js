@@ -83,12 +83,14 @@ async function createMetaDataTable() {
   }
 }
 
-async function addTableName(tableName) {
+async function addTableName(migrationName) {
   try {
+
+    const recordName=constructRecordName(migrationName)
     const addParams = {
       TableName: CONSTANTS.DYNAMOMETA,
       Item: {
-        tableName: tableName,
+        tableName: recordName,
       },
     };
 
@@ -99,12 +101,14 @@ async function addTableName(tableName) {
   }
 }
 
-async function deleteTableName(tableName) {
+async function deleteTableName(migrationName) {
   try {
+
+    const recordName=constructRecordName(migrationName)
     const deleteParams = {
       TableName: CONSTANTS.DYNAMOMETA,
       Key: {
-        tableName: tableName,
+        tableName: recordName,
       },
     };
 
@@ -116,9 +120,10 @@ async function deleteTableName(tableName) {
   }
 }
 
-async function checkTableExecutionStatus(fileName) {
+async function checkTableExecutionStatus(migrationName) {
   try {
-    const tableExist = await checkMigrationExists(fileName);
+    const recordName=constructRecordName(migrationName)
+    const tableExist = await checkMigrationExists(recordName);
 
     if (tableExist.Count >=1) {
       return true;
@@ -150,6 +155,18 @@ async function fetchAllMigrationNames() {
 }
 
 
+function constructRecordName(fileName){
+  try{
+    const recordName = fileName.endsWith(".js")
+    ? fileName
+    : `${fileName}.js`;
+
+    return recordName;
+  }catch(err){
+    return false
+  }
+}
+
 
 
 
@@ -160,4 +177,5 @@ module.exports = {
   deleteTableName,
   checkTableExecutionStatus,
   fetchAllMigrationNames,
+  constructRecordName
 };
