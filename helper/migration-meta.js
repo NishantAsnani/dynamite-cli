@@ -125,9 +125,13 @@ async function deleteTableName(migrationName) {
 async function checkTableExecutionStatus(migrationName,isSeederFile) {
   const fileType=isSeederFile?CONSTANTS.SEEDERS:CONSTANTS.MIGRATIONS;
   try {
-    const recordName=constructRecordName(migrationName)
+    const recordName=constructRecordName(migrationName);
     const tableExist = await checkMigrationExists(recordName);
     const migrationExistsInFolder=await filePresentinFolder(migrationName,isSeederFile);
+
+    if(!migrationExistsInFolder){
+      return {isSuccess:false,status:STATUS.NOT_EXISTS,msg:`${fileType} file ${migrationName} does not exist`}
+    }
 
     if (tableExist.Count >=1) {
       return {isSuccess:true,status:STATUS.FOUND,msg:`${fileType} file ${migrationName} exist`}
@@ -146,7 +150,6 @@ async function checkTableExecutionStatus(migrationName,isSeederFile) {
     }
   } catch (err) {
     if (err.name == "ResourceNotFoundException") {
-      console.log("Table doesnt exist")
       logger.error(`This ${fileType} file does not exist`)
     } else {
       logger.error("Cannot Check Status of migration provided ", err);
@@ -192,6 +195,8 @@ async function filePresentinFolder(fileName,isSeederFile) {
       withFileTypes: true,
     });
 
+    
+
     const recordName = constructRecordName(fileName);
 
     const isFilePresent = fileList
@@ -200,6 +205,9 @@ async function filePresentinFolder(fileName,isSeederFile) {
 
     return isFilePresent;
   } catch (err) {
+    if (err.code == 'ENOENT') {
+      return false
+    }
     logger.error(err);
   }
 }
