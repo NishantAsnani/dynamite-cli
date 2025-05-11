@@ -5,7 +5,11 @@ const CONSTANTS={
 }
 
 const STATUS={
-    ACTIVE:"ACTIVE"
+    ACTIVE:"ACTIVE",
+    NOT_FOUND:"NOT_FOUND",
+    FOUND:"FOUND",
+    ERROR:"ERROR",
+    NOT_EXISTS:"NOT_EXISTS"
 }
 
 

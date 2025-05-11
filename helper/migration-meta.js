@@ -11,6 +11,9 @@ const {
   DeleteCommand,
   ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
+const {logger}=require('../helper/logger');
+const {STATUS}=require('../constants')
+const fs=require('fs').promises
 
 async function checkMigrationExists(fileNameValue) {
   try {
@@ -69,8 +72,7 @@ async function createMetaDataTable() {
       if (tableStatus === "ACTIVE") {
         isTableActive = true;
       } else {
-        console.log(`⏳ Table status is ${tableStatus}. Waiting...`);
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // wait 2 seconds
+        continue;
       }
     }
 
@@ -97,7 +99,7 @@ async function addTableName(migrationName) {
     const command = new PutCommand(addParams);
     await docClient.send(command);
   } catch (err) {
-    console.log("Error adding name", err);
+    logger.error("Error adding name", err);
   }
 }
 
@@ -120,20 +122,36 @@ async function deleteTableName(migrationName) {
   }
 }
 
-async function checkTableExecutionStatus(migrationName) {
+async function checkTableExecutionStatus(migrationName,isSeederFile) {
+  const fileType=isSeederFile?CONSTANTS.SEEDERS:CONSTANTS.MIGRATIONS;
   try {
     const recordName=constructRecordName(migrationName)
     const tableExist = await checkMigrationExists(recordName);
+    const migrationExistsInFolder=await filePresentinFolder(migrationName,isSeederFile);
 
     if (tableExist.Count >=1) {
-      return true;
+      return {isSuccess:true,status:STATUS.FOUND,msg:`${fileType} file ${migrationName} exist`}
+    }
+    else{
+
+      if(!migrationExistsInFolder){
+        return {isSuccess:false,status:STATUS.NOT_EXISTS,msg:`${fileType} file ${migrationName} does not exist`}
+      }
+      else{
+        return {isSuccess:false,status:STATUS.NOT_FOUND,msg:`${fileType} file ${migrationName} has not run`}
+      }
+
+
+      
     }
   } catch (err) {
     if (err.name == "ResourceNotFoundException") {
-      return false;
+      console.log("Table doesnt exist")
+      logger.error(`This ${fileType} file does not exist`)
     } else {
-      console.log("Cannot Check Status of migration provided ", err);
+      logger.error("Cannot Check Status of migration provided ", err);
     }
+    return {isSuccess:false,status:STATUS.ERROR,msg:`Internal server error`}
   }
 }
 
@@ -167,6 +185,24 @@ function constructRecordName(fileName){
   }
 }
 
+async function filePresentinFolder(fileName,isSeederFile) {
+  try {
+    const folderName=isSeederFile?CONSTANTS.SEEDERS:CONSTANTS.MIGRATIONS
+    const fileList = await fs.readdir(folderName, {
+      withFileTypes: true,
+    });
+
+    const recordName = constructRecordName(fileName);
+
+    const isFilePresent = fileList
+      .filter((dirent) => dirent.isFile())
+      .find((file) => file.name == recordName);
+
+    return isFilePresent;
+  } catch (err) {
+    logger.error(err);
+  }
+}
 
 
 
@@ -177,5 +213,6 @@ module.exports = {
   deleteTableName,
   checkTableExecutionStatus,
   fetchAllMigrationNames,
-  constructRecordName
+  constructRecordName,
+  filePresentinFolder
 };

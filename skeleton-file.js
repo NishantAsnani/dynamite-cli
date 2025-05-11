@@ -1,5 +1,3 @@
-
-
 const skeletalMigration = {
   createTableSkeleton: (tableName, partitionKeyName, partitionKeyType, sortKeyName, sortKeyType) => {
     const sortKeyLine = sortKeyName
