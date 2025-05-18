@@ -21,11 +21,11 @@
 Since it's not published to npm yet, you can run it locally using:
 
 
-node index.js <command> [options]
+ node index.js <command> [options]
 
 ##  🧪 Requirements
 
-- Node.js 14 or higher  
+-  node.js 14 or higher  
 - AWS credentials in a `.env` file with:  
 
 AWS_ACCESS_KEY_ID=your_key
@@ -36,8 +36,12 @@ AWS_REGION=your_region
 - IAM permissions needed for DynamoDB:  
 - `dynamodb:CreateTable`  
 - `dynamodb:DeleteTable`  
+- `dynamodb:DescribeTable`
+- `dynamodb:ListTables`  
 - `dynamodb:PutItem`  
-- `dynamodb:DescribeTable`  
+- `dynamodb:DeleteItem`  
+- `dynamodb:Query`
+- `dynamodb:Scan`
 
 
 
@@ -46,55 +50,55 @@ AWS_REGION=your_region
 ### Help
 
 Display CLI help menu:
-node index.js --help
+```bash node index.js --help
 
 ### Create Migration
 
 Create a migration without a sort key:
-node index.js migration:create --name "create-users" --partitionKey id:N
+```bash node index.js migration:create --name "create-users" --partitionKey id:N
 
 Create a migration with a sort key:
-node index.js migration:create --name "create-tenants" --partitionKey id:N --sortKey tenantId:S
+```bash node index.js migration:create --name "create-tenants" --partitionKey id:N --sortKey tenantId:S
 
 
 ### Run Migrations
 
 Run a specific migration by name:
-node index.js migration:run --name "your-migration-name"
+```bash node index.js migration:run --name "your-migration-name"
 
 Run all pending migrations:
-node index.js migration:run --all
+```bash node index.js migration:run --all
 
 
 ### Undo Migrations
 
 Undo a specific migration by name:
-node index.js migration:undo --name "your-migration-name"
+```bash node index.js migration:undo --name "your-migration-name"
 
 Undo the latest run migration:
-node index.js migration:undo
+```bash node index.js migration:undo
 
 Undo all migrations:
-node index.js migration:undo --all
+```bash node index.js migration:undo --all
 
 
 ### Create Seeders
 
 Create a seeder (same as migration command syntax):
-node index.js seed:create --name "add-users"
+```bash node index.js seed:create --name "add-users"
 
 ### Run Seeders
 
 Run a specific seeder:
-node index.js seed:run --name "your-seeder-name"
+```bash node index.js seed:run --name "your-seeder-name"
 
 Force rerun a seeder: (As seeder undoing is not possible)
-node index.js seed:run --name "your-seeder-file" --force
+```bash node index.js seed:run --name "your-seeder-file" --force
 
 ### List Migration and Seeder Status
 
 Check status of all migrations and seeders:
-node index.js list
+```bash node index.js list
 
 ## 💰 AWS Billing Notice
 
