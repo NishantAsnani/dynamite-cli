@@ -50,55 +50,55 @@ AWS_REGION=your_region
 ### Help
 
 Display CLI help menu:
-```bash node index.js --help
+```bash node index.js --help ```
 
 ### Create Migration
 
 Create a migration without a sort key:
-```bash node index.js migration:create --name "create-users" --partitionKey id:N
+```bash node index.js migration:create --name "create-users" --partitionKey id:N```
 
 Create a migration with a sort key:
-```bash node index.js migration:create --name "create-tenants" --partitionKey id:N --sortKey tenantId:S
+```bash node index.js migration:create --name "create-tenants" --partitionKey id:N --sortKey tenantId:S```
 
 
 ### Run Migrations
 
 Run a specific migration by name:
-```bash node index.js migration:run --name "your-migration-name"
+```bash node index.js migration:run --name "your-migration-name"```
 
 Run all pending migrations:
-```bash node index.js migration:run --all
+```bash node index.js migration:run --all```
 
 
 ### Undo Migrations
 
 Undo a specific migration by name:
-```bash node index.js migration:undo --name "your-migration-name"
+```bash node index.js migration:undo --name "your-migration-name" ```
 
 Undo the latest run migration:
-```bash node index.js migration:undo
+```bash node index.js migration:undo ```
 
 Undo all migrations:
-```bash node index.js migration:undo --all
+```bash node index.js migration:undo --all ```
 
 
 ### Create Seeders
 
 Create a seeder (same as migration command syntax):
-```bash node index.js seed:create --name "add-users"
+```bash node index.js seed:create --name "your-seeder-file-name" ```
 
 ### Run Seeders
 
 Run a specific seeder:
-```bash node index.js seed:run --name "your-seeder-name"
+```bash node index.js seed:run --name "your-seeder-name" ```
 
 Force rerun a seeder: (As seeder undoing is not possible)
-```bash node index.js seed:run --name "your-seeder-file" --force
+```bash node index.js seed:run --name "your-seeder-file" --force ```
 
 ### List Migration and Seeder Status
 
 Check status of all migrations and seeders:
-```bash node index.js list
+```bash node index.js list ```
 
 ## 💰 AWS Billing Notice
 
