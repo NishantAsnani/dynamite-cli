@@ -28,12 +28,15 @@ Since it's not published to npm yet, you can run it locally using:
 -  node.js 14 or higher  
 - AWS credentials in a `.env` file with:  
 
-AWS_ACCESS_KEY_ID=your_key
-AWS_SECRET_ACCESS_KEY=your_secret
-AWS_REGION=your_region
+### .env file
+
+- AWS_ACCESS_KEY_ID=your_key
+- AWS_SECRET_ACCESS_KEY=your_secret
+- AWS_REGION=your_region
 
 
-- IAM permissions needed for DynamoDB:  
+### IAM permissions needed for DynamoDB:  
+
 - `dynamodb:CreateTable`  
 - `dynamodb:DeleteTable`  
 - `dynamodb:DescribeTable`
