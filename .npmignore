@@ -4,7 +4,6 @@
 .gitignore
 
 # Directories not needed for production
-helper/
 migrations/
 seeders/
 node_modules/
