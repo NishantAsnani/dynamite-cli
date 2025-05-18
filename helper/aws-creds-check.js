@@ -10,9 +10,9 @@ function checkEnvVars() {
 
   if (missing.length) {
     logger.error(`❌ Missing AWS credentials: ${missing.join(", ")}`);
-    logger.info("Please create a .env file or set environment variables.");
+    logger.info("Please create a .env file and set environment variables.");
     logger.info(`\nExample .env:
-AWS_REGION=us-east-1
+AWS_REGION=your-aws-region
 AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
 `);
