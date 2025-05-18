@@ -68,6 +68,9 @@ node index.js migration:create --name "create-users" --partitionKey id:N
 - `--name` Name of the migration file.
 - `--partitionKey` Partition key definition (`name:type`).
 - `--sortKey` *(optional)* Sort key definition (`name:type`).
+- Available types: `N` = Number, `S` = String, `B` = Binary.
+- If not specified, the default type is `N` (Number).
+
 
 Example with a sort key:
 ```bash
@@ -117,7 +120,7 @@ node index.js migration:undo --all
 
 Generate a new seeder file.
 ```bash
-node index.js seed:create --name "your-seeder-file-name"
+node index.js seed:create --name "your-seeder-name"
 ```
 - `--name` Name of the seeder file.
 
@@ -134,7 +137,7 @@ node index.js seed:run --name "your-seeder-name"
 
 **Force rerun a seeder (irreversible):**
 ```bash
-node index.js seed:run --name "your-seeder-file" --force
+node index.js seed:run --name "your-seeder-name" --force
 ```
 
 ---
