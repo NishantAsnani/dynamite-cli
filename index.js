@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const {program}=require('commander');
 require('dotenv').config();
 const AWS = require("aws-sdk");

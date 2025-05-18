@@ -2,6 +2,8 @@
 
  A CLI tool to handle **migrations** and **seeders** for DynamoDB with ease.
 
+**Note:** This is an early release — tested manually, but bugs may exist. PRs and issues are welcome!
+
 ---
 
 ## 📦 Features
