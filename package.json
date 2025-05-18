@@ -1,18 +1,17 @@
 {
-  "name": "dynamo-cli",
+  "name": "dynamodb-cli",
   "version": "0.1.0",
   "main": "index.js",
   "description": "CLI for DynamoDB migrations and seeders",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
   "bin": {
-    "dynamo-cli": "./index.js"
+    "dynamodb-cli": "./index.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/dynamo-cli.git"
+    "url": "https://github.com/NishantAsnani/dynamo-migration-cli"
   },
   "keywords": [
     "dynamodb",
@@ -20,7 +19,7 @@
     "migration",
     "aws"
   ],
-  "author": "",
+  "author": "Nishant",
   "license": "MIT",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.797.0",

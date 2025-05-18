@@ -1,0 +1,30 @@
+# Development files
+.env
+.env.example
+.gitignore
+
+# Directories not needed for production
+helper/
+migrations/
+seeders/
+node_modules/
+
+# IDE and editor files
+.vscode/
+.idea/
+
+
+
+
+# Documentation and markdown files (except README.md)
+docs/
+*.md
+!README.md
+
+
+
+
+
+# Source control files
+.git/
+.github/
