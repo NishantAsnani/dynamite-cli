@@ -1,6 +1,6 @@
 # 🚀 dynamo-cli
 
-> A CLI tool to handle **migrations** and **seeders** for DynamoDB with ease.
+ A CLI tool to handle **migrations** and **seeders** for DynamoDB with ease.
 
 ---
 
@@ -47,58 +47,101 @@ AWS_REGION=your_region
 
 ## 🛠️ Usage
 
-### Help
+### Display Help
 
-Display CLI help menu:
-```bash node index.js --help ```
+Show the CLI help menu with all available commands and options.
+```bash
+node index.js --help
+```
 
-### Create Migration
+---
 
-Create a migration without a sort key:
-```bash node index.js migration:create --name "create-users" --partitionKey id:N```
+### Create a Migration
 
-Create a migration with a sort key:
-```bash node index.js migration:create --name "create-tenants" --partitionKey id:N --sortKey tenantId:S```
+Generate a new migration file with a partition key (and optional sort key).
+```bash
+node index.js migration:create --name "create-users" --partitionKey id:N
+```
+- `--name` Name of the migration file.
+- `--partitionKey` Partition key definition (`name:type`).
+- `--sortKey` *(optional)* Sort key definition (`name:type`).
 
+Example with a sort key:
+```bash
+node index.js migration:create --name "create-tenants" --partitionKey id:N --sortKey tenantId:S
+```
+
+---
 
 ### Run Migrations
 
-Run a specific migration by name:
-```bash node index.js migration:run --name "your-migration-name"```
+Apply migrations to your DynamoDB tables.
 
-Run all pending migrations:
-```bash node index.js migration:run --all```
+**Run a specific migration by name:**
+```bash
+node index.js migration:run --name "your-migration-name"
+```
 
+**Run all pending migrations:**
+```bash
+node index.js migration:run --all
+```
+
+---
 
 ### Undo Migrations
 
-Undo a specific migration by name:
-```bash node index.js migration:undo --name "your-migration-name" ```
+Revert previously applied migrations.
 
-Undo the latest run migration:
-```bash node index.js migration:undo ```
+**Undo a specific migration by name:**
+```bash
+node index.js migration:undo --name "your-migration-name"
+```
 
-Undo all migrations:
-```bash node index.js migration:undo --all ```
+**Undo the latest run migration:**
+```bash
+node index.js migration:undo
+```
 
+**Undo all migrations:**
+```bash
+node index.js migration:undo --all
+```
 
-### Create Seeders
+---
 
-Create a seeder (same as migration command syntax):
-```bash node index.js seed:create --name "your-seeder-file-name" ```
+### Create a Seeder
+
+Generate a new seeder file.
+```bash
+node index.js seed:create --name "your-seeder-file-name"
+```
+- `--name` Name of the seeder file.
+
+---
 
 ### Run Seeders
 
-Run a specific seeder:
-```bash node index.js seed:run --name "your-seeder-name" ```
+Populate your tables with seed data.
 
-Force rerun a seeder: (As seeder undoing is not possible)
-```bash node index.js seed:run --name "your-seeder-file" --force ```
+**Run a specific seeder:**
+```bash
+node index.js seed:run --name "your-seeder-name"
+```
+
+**Force rerun a seeder (irreversible):**
+```bash
+node index.js seed:run --name "your-seeder-file" --force
+```
+
+---
 
 ### List Migration and Seeder Status
 
-Check status of all migrations and seeders:
-```bash node index.js list ```
+Display the status of all migrations and seeders.
+```bash
+node index.js list
+```
 
 ## 💰 AWS Billing Notice
 
