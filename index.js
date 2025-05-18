@@ -2,17 +2,20 @@ const {program}=require('commander');
 require('dotenv').config();
 const AWS = require("aws-sdk");
 const {runMigrationFile,createMigrationFiles,undoMigrationFile,createSeederFile,runSeederFile,listStatus}=require('./lib/cli-command')
-// program.command('hello').action(() => {
-//     console.log('Hello from Dynamo CLI!');
-//   });
-// program.parse(process.argv);
+const {checkEnvVars,validateAWSCredentials}=require('./helper/aws-creds-check')
+const {docClient}=require('./db')
+
+checkEnvVars()
 
 AWS.config.update({
-  accessKeyId: process.env.AWS_KEY,
-  secretAccessKey:process.env.AWS_SECRET_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
   region:process.env.AWS_REGION
 });
 
+(async () => {
+  await validateAWSCredentials(docClient);
+})();
 
 console.log("App Started.......")
 

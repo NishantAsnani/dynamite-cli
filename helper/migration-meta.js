@@ -15,7 +15,8 @@ const {logger}=require('../helper/logger');
 const {STATUS}=require('../constants')
 const fs=require('fs').promises
 
-async function checkMigrationExists(fileNameValue) {
+async function checkMigrationExists(fileNameValue,isSeederFile) {
+  const fileType=isSeederFile?CONSTANTS.SEEDERS:CONSTANTS.MIGRATIONS;
   try {
     const findParams={
       TableName:CONSTANTS.DYNAMOMETA,
@@ -33,7 +34,13 @@ async function checkMigrationExists(fileNameValue) {
 
     return response; 
   } catch (err) {
-    throw err; 
+    if(err.name=='ResourceNotFoundException'){
+      logger.error(`${fileType} ${fileNameValue} does not exist`);
+    }
+    else{
+      logger.error("Error checking migration");
+    }
+    process.exit(1);
   }
 }
 
@@ -78,10 +85,11 @@ async function createMetaDataTable() {
 
   } catch (err) {
     if (err.name == "ResourceInUseException") {
-      return false;
+      logger.warn("⚠️ Meta table already exists:");
     } else {
-      console.error("❌ Error while creating table:", err);
+      logger.error("❌ Error while creating table:", err);
     }
+    process.exit(1)
   }
 }
 
@@ -99,7 +107,8 @@ async function addTableName(migrationName) {
     const command = new PutCommand(addParams);
     await docClient.send(command);
   } catch (err) {
-    logger.error("Error adding name", err);
+    logger.error("Error running", err);
+    process.exit(1)
   }
 }
 
@@ -118,7 +127,8 @@ async function deleteTableName(migrationName) {
     const command = new DeleteCommand(deleteParams);
     await docClient.send(command);
   } catch (err) {
-    console.log("Error adding name", err);
+    logger.error("Error undoing", err);
+    process.exit(1)
   }
 }
 
@@ -126,12 +136,8 @@ async function checkTableExecutionStatus(migrationName,isSeederFile) {
   const fileType=isSeederFile?CONSTANTS.SEEDERS:CONSTANTS.MIGRATIONS;
   try {
     const recordName=constructRecordName(migrationName);
-    const tableExist = await checkMigrationExists(recordName);
+    const tableExist = await checkMigrationExists(recordName,isSeederFile);
     const migrationExistsInFolder=await filePresentinFolder(migrationName,isSeederFile);
-
-    if(!migrationExistsInFolder){
-      return {isSuccess:false,status:STATUS.NOT_EXISTS,msg:`${fileType} file ${migrationName} does not exist`}
-    }
 
     if (tableExist.Count >=1) {
       return {isSuccess:true,status:STATUS.FOUND,msg:`${fileType} file ${migrationName} exist`}
@@ -151,10 +157,11 @@ async function checkTableExecutionStatus(migrationName,isSeederFile) {
   } catch (err) {
     if (err.name == "ResourceNotFoundException") {
       logger.error(`This ${fileType} file does not exist`)
+      
     } else {
       logger.error("Cannot Check Status of migration provided ", err);
     }
-    return {isSuccess:false,status:STATUS.ERROR,msg:`Internal server error`}
+    process.exit(1)
   }
 }
 
