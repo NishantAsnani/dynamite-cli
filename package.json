@@ -1,5 +1,5 @@
 {
-  "name": "dynamodb-cli",
+  "name": "dynamite-cli",
   "version": "0.1.0",
   "main": "index.js",
   "description": "CLI for DynamoDB migrations and seeders",
@@ -7,7 +7,7 @@
     "start": "nodemon index.js"
   },
   "bin": {
-    "dynamodb-cli": "./index.js"
+    "dynamite-cli": "./index.js"
   },
   "repository": {
     "type": "git",
