@@ -15,11 +15,12 @@ AWS.config.update({
   region:process.env.AWS_REGION
 });
 
+
 (async () => {
   await validateAWSCredentials(docClient);
 })();
 
-console.log("App Started.......")
+
 
 
 createMigrationFiles()
