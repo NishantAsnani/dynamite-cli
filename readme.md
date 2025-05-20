@@ -1,4 +1,4 @@
-# 🚀 dynamo-cli
+# 🧨 dynamite-cli
 
  A CLI tool to handle **migrations** and **seeders** for DynamoDB with ease.
 
