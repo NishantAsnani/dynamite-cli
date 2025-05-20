@@ -20,8 +20,6 @@
 
 ## ⚙️ Installation
 
-Since it's not published to npm yet, you can run it locally using:
-
 
  npx dynamite-cli <command> [options]
 
