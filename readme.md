@@ -20,6 +20,8 @@
 
 ## ⚙️ Installation
 
+Since it's not published to npm yet, you can run it locally using:
+
 
  npx dynamite-cli <command> [options]
 
@@ -50,7 +52,7 @@
 
 ## 🛠️ Usage
 
-> **Note:** If you are working locally (without installing globally), replace `npx dynamite-cli` with `node index.js` in all commands below.
+npm i dynamite-cli
 
 ### Display Help
 
