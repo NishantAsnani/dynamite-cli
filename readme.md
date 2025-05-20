@@ -23,7 +23,7 @@
 Since it's not published to npm yet, you can run it locally using:
 
 
- node index.js <command> [options]
+ npx dynamite-cli <command> [options]
 
 ##  🧪 Requirements
 
@@ -56,7 +56,7 @@ Since it's not published to npm yet, you can run it locally using:
 
 Show the CLI help menu with all available commands and options.
 ```bash
-node index.js --help
+npx dynamite-cli --help
 ```
 
 ---
@@ -65,7 +65,7 @@ node index.js --help
 
 Generate a new migration file with a partition key (and optional sort key).
 ```bash
-node index.js migration:create --name "tableName" --partitionKey id:N
+npx dynamite-cli migration:create --name "tableName" --partitionKey id:N
 ```
 - `--name` Name of the migration file.
 - `--partitionKey` Partition key definition (`name:type`).
@@ -76,7 +76,7 @@ node index.js migration:create --name "tableName" --partitionKey id:N
 
 Example with a sort key:
 ```bash
-node index.js migration:create --name "tableName" --partitionKey id:N --sortKey tenantId:S
+npx dynamite-cli migration:create --name "tableName" --partitionKey id:N --sortKey tenantId:S
 ```
 
 ---
@@ -87,12 +87,12 @@ Apply migrations to your DynamoDB tables.
 
 **Run a specific migration by name:**
 ```bash
-node index.js migration:run --name "your-migration-name"
+npx dynamite-cli migration:run --name "your-migration-name"
 ```
 
 **Run all pending migrations:**
 ```bash
-node index.js migration:run --all
+npx dynamite-cli migration:run --all
 ```
 
 ---
@@ -103,17 +103,17 @@ Revert previously applied migrations.
 
 **Undo a specific migration by name:**
 ```bash
-node index.js migration:undo --name "your-migration-name"
+npx dynamite-cli migration:undo --name "your-migration-name"
 ```
 
 **Undo the latest run migration:**
 ```bash
-node index.js migration:undo
+npx dynamite-cli migration:undo
 ```
 
 **Undo all migrations:**
 ```bash
-node index.js migration:undo --all
+npx dynamite-cli migration:undo --all
 ```
 
 ---
@@ -122,7 +122,7 @@ node index.js migration:undo --all
 
 Generate a new seeder file.
 ```bash
-node index.js seed:create --name "your-seeder-name"
+npx dynamite-cli seed:create --name "your-seeder-name"
 ```
 - `--name` Name of the seeder file.
 
@@ -134,12 +134,12 @@ Populate your tables with seed data.
 
 **Run a specific seeder:**
 ```bash
-node index.js seed:run --name "your-seeder-name"
+npx dynamite-cli seed:run --name "your-seeder-name"
 ```
 
 **Force rerun a seeder (irreversible):**
 ```bash
-node index.js seed:run --name "your-seeder-name" --force
+npx dynamite-cli seed:run --name "your-seeder-name" --force
 ```
 
 > ⚠️ Seeder files cannot be undone. Use the `--force` flag to rerun a seeder if needed.
@@ -150,7 +150,7 @@ node index.js seed:run --name "your-seeder-name" --force
 
 Display the status of all migrations and seeders.
 ```bash
-node index.js list
+npx dynamite-cli list
 ```
 
 ## 💰 AWS Billing Notice
