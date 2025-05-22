@@ -60,11 +60,15 @@ Show the CLI help menu with all available commands and options.
 npx dynamite-cli --help
 ```
 
+
 ---
 
 ### Create a Migration
 
 Generate a new migration file with a partition key (and optional sort key).
+
+![Create Migration Screenshot](assets/migration-create-1.png)
+
 ```bash
 npx dynamite-cli migration:create --name "tableName" --partitionKey id:N
 ```
@@ -73,7 +77,6 @@ npx dynamite-cli migration:create --name "tableName" --partitionKey id:N
 - `--sortKey` *(optional)* Sort key definition (`name:type`).
 - Available types: `N` = Number, `S` = String, `B` = Binary.
 - If not specified, the default type is `N` (Number).
-
 
 Example with a sort key:
 ```bash
@@ -85,6 +88,8 @@ npx dynamite-cli migration:create --name "tableName" --partitionKey id:N --sortK
 ### Run Migrations
 
 Apply migrations to your DynamoDB tables.
+
+![Run Migration Screenshot](assets/migration-run-1.png)
 
 **Run a specific migration by name:**
 ```bash
@@ -101,6 +106,8 @@ npx dynamite-cli migration:run
 ### Undo Migrations
 
 Revert previously applied migrations.
+
+![Undo Migration Screenshot](assets/migration-undo-1.png)
 
 **Undo a specific migration by name:**
 ```bash
@@ -122,6 +129,9 @@ npx dynamite-cli migration:undo --all
 ### Create a Seeder
 
 Generate a new seeder file.
+
+![Create Seeder Screenshot](assets/seed-create-1.png)
+
 ```bash
 npx dynamite-cli seed:create --name "your-seeder-name"
 ```
@@ -132,6 +142,8 @@ npx dynamite-cli seed:create --name "your-seeder-name"
 ### Run Seeders
 
 Populate your tables with seed data.
+
+![Run Seeder Screenshot](assets/seed-run-1.png)
 
 **Run a specific seeder:**
 ```bash
@@ -150,6 +162,9 @@ npx dynamite-cli seed:run --name "your-seeder-name" --force
 ### List Migration and Seeder Status
 
 Display the status of all migrations and seeders.
+
+![List Status Screenshot](assets/list-status-1.png)
+
 ```bash
 npx dynamite-cli list
 ```
