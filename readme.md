@@ -93,7 +93,7 @@ npx dynamite-cli migration:run --name "your-migration-name"
 
 **Run all pending migrations:**
 ```bash
-npx dynamite-cli migration:run --all
+npx dynamite-cli migration:run
 ```
 
 ---
