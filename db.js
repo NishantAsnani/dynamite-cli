@@ -15,9 +15,7 @@ async function getDynamoClients() {
       },
     });
   } else {
-    client = new DynamoDBClient({
-      region: process.env.AWS_REGION
-    });
+    client = new DynamoDBClient();
   }
 
   const docClient = DynamoDBDocumentClient.from(client);
