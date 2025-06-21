@@ -26,15 +26,16 @@ npm i dynamite-cli
 
 ##  🧪 Requirements
 
--  node.js 14 or higher  
-- AWS credentials in a `.env` file with:  
-
-### .env file
-
-- AWS_ACCESS_KEY_ID=your_key
-- AWS_SECRET_ACCESS_KEY=your_secret
-- AWS_REGION=your_region
-
+- node.js 14 or higher  
+- AWS credentials provided in **one** of the following ways:
+  - **Option 1:** In a `.env` file in your project root with:
+    ```
+    AWS_ACCESS_KEY_ID=your_key
+    AWS_SECRET_ACCESS_KEY=your_secret
+    AWS_REGION=your_region
+    ```
+  - **Option 2:** Already configured globally via [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) (`aws configure`).  
+    If your AWS credentials are set up using the AWS CLI, you do not need a `.env` file.
 
 ### IAM permissions needed for DynamoDB:  
 
