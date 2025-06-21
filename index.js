@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 const { program } = require("commander");
-require("dotenv").config();
+const fs = require('fs');
+
+if (fs.existsSync('.env')) {
+  require('dotenv').config();
+}
+
 const {
   runMigrationFile,
   createMigrationFiles,
@@ -15,14 +20,20 @@ const {
   validateAWSCredentials
 }=require("./helper/aws-creds-check")
 
-const { docClient } = require("./db");
 
-checkEnvVars()
+const {hasValidAWSCredentials}=require('./helper/check-validated-creds')
+
+const getDynamoClients = require("./db");
+
+
 
 
     
 async function main(){
   try {
+    const { docClient } = await getDynamoClients();
+    const ValidatedCreds=hasValidAWSCredentials()
+    await checkEnvVars(ValidatedCreds)
     await validateAWSCredentials(docClient);
   } catch (err) {
     console.error("Failed to initialize CLI:", err);
