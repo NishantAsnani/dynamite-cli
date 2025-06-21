@@ -3,41 +3,41 @@ const {
   DescribeTableCommand,
   QueryCommand,
 } = require("@aws-sdk/client-dynamodb");
-
-const { client, docClient } = require("../db");
+const getDynamoClients = require("../db");
 const { CONSTANTS } = require("../constants");
 const {
   PutCommand,
   DeleteCommand,
   ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
-const {logger}=require('../helper/logger');
-const {STATUS}=require('../constants')
-const fs=require('fs').promises
+const { logger } = require('../helper/logger');
+const { STATUS } = require('../constants')
+const fs = require('fs').promises
 
-async function checkMigrationExists(fileNameValue,isSeederFile) {
-  const fileType=isSeederFile?CONSTANTS.SEEDERS:CONSTANTS.MIGRATIONS;
+async function checkMigrationExists(fileNameValue, isSeederFile) {
+  const { client } = await getDynamoClients();
+  const fileType = isSeederFile ? CONSTANTS.SEEDERS : CONSTANTS.MIGRATIONS;
   try {
-    const findParams={
-      TableName:CONSTANTS.DYNAMOMETA,
+    const findParams = {
+      TableName: CONSTANTS.DYNAMOMETA,
       KeyConditionExpression: "tableName = :fileNameValue",
       ExpressionAttributeValues: {
-        ":fileNameValue":{ S: fileNameValue }, 
+        ":fileNameValue": { S: fileNameValue },
       },
     }
 
-    
+
     const response = await client.send(
       new QueryCommand(findParams)
     );
 
 
-    return response; 
+    return response;
   } catch (err) {
-    if(err.name=='ResourceNotFoundException'){
+    if (err.name == 'ResourceNotFoundException') {
       logger.error(`${fileType} ${fileNameValue} does not exist`);
     }
-    else{
+    else {
       logger.error("Error checking migration");
     }
     process.exit(1);
@@ -46,6 +46,7 @@ async function checkMigrationExists(fileNameValue,isSeederFile) {
 
 async function createMetaDataTable() {
   const tableName = CONSTANTS.DYNAMOMETA;
+  const { client } = await getDynamoClients();
 
   try {
     const createParams = {
@@ -94,9 +95,9 @@ async function createMetaDataTable() {
 }
 
 async function addTableName(migrationName) {
+  const { docClient } = await getDynamoClients();
   try {
-
-    const recordName=constructRecordName(migrationName)
+    const recordName = constructRecordName(migrationName)
     const addParams = {
       TableName: CONSTANTS.DYNAMOMETA,
       Item: {
@@ -113,9 +114,9 @@ async function addTableName(migrationName) {
 }
 
 async function deleteTableName(migrationName) {
+  const { docClient } = await getDynamoClients();
   try {
-
-    const recordName=constructRecordName(migrationName)
+    const recordName = constructRecordName(migrationName)
     const deleteParams = {
       TableName: CONSTANTS.DYNAMOMETA,
       Key: {
@@ -132,32 +133,32 @@ async function deleteTableName(migrationName) {
   }
 }
 
-async function checkTableExecutionStatus(migrationName,isSeederFile) {
-  const fileType=isSeederFile?CONSTANTS.SEEDERS:CONSTANTS.MIGRATIONS;
+async function checkTableExecutionStatus(migrationName, isSeederFile) {
+  const fileType = isSeederFile ? CONSTANTS.SEEDERS : CONSTANTS.MIGRATIONS;
   try {
-    const recordName=constructRecordName(migrationName);
-    const tableExist = await checkMigrationExists(recordName,isSeederFile);
-    const migrationExistsInFolder=await filePresentinFolder(migrationName,isSeederFile);
+    const recordName = constructRecordName(migrationName);
+    const tableExist = await checkMigrationExists(recordName, isSeederFile);
+    const migrationExistsInFolder = await filePresentinFolder(migrationName, isSeederFile);
 
-    if (tableExist.Count >=1) {
-      return {isSuccess:true,status:STATUS.FOUND,msg:`${fileType} file ${migrationName} exist`}
+    if (tableExist.Count >= 1) {
+      return { isSuccess: true, status: STATUS.FOUND, msg: `${fileType} file ${migrationName} exist` }
     }
-    else{
+    else {
 
-      if(!migrationExistsInFolder){
-        return {isSuccess:false,status:STATUS.NOT_EXISTS,msg:`${fileType} file ${migrationName} does not exist`}
+      if (!migrationExistsInFolder) {
+        return { isSuccess: false, status: STATUS.NOT_EXISTS, msg: `${fileType} file ${migrationName} does not exist` }
       }
-      else{
-        return {isSuccess:false,status:STATUS.NOT_FOUND,msg:`${fileType} file ${migrationName} has not run`}
+      else {
+        return { isSuccess: false, status: STATUS.NOT_FOUND, msg: `${fileType} file ${migrationName} has not run` }
       }
 
 
-      
+
     }
   } catch (err) {
     if (err.name == "ResourceNotFoundException") {
       logger.error(`This ${fileType} file does not exist`)
-      
+
     } else {
       logger.error("Cannot Check Status of migration provided ", err);
     }
@@ -166,6 +167,7 @@ async function checkTableExecutionStatus(migrationName,isSeederFile) {
 }
 
 async function fetchAllMigrationNames() {
+  const { docClient } = await getDynamoClients();
   try {
     const params = {
       TableName: CONSTANTS.DYNAMOMETA,
@@ -183,26 +185,26 @@ async function fetchAllMigrationNames() {
 }
 
 
-function constructRecordName(fileName){
-  try{
+function constructRecordName(fileName) {
+  try {
     const recordName = fileName.endsWith(".js")
-    ? fileName
-    : `${fileName}.js`;
+      ? fileName
+      : `${fileName}.js`;
 
     return recordName;
-  }catch(err){
+  } catch (err) {
     return false
   }
 }
 
-async function filePresentinFolder(fileName,isSeederFile) {
+async function filePresentinFolder(fileName, isSeederFile) {
   try {
-    const folderName=isSeederFile?CONSTANTS.SEEDERS:CONSTANTS.MIGRATIONS
+    const folderName = isSeederFile ? CONSTANTS.SEEDERS : CONSTANTS.MIGRATIONS
     const fileList = await fs.readdir(folderName, {
       withFileTypes: true,
     });
 
-    
+
 
     const recordName = constructRecordName(fileName);
 

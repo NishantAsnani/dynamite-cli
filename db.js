@@ -16,7 +16,7 @@ async function getDynamoClients() {
     });
   } else {
     client = new DynamoDBClient({
-      region: process.env.AWS_REGION,
+      region: process.env.AWS_REGION
     });
   }
 
